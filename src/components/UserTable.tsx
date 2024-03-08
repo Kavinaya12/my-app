@@ -8,11 +8,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TablePagination,
   AppBar,
   Toolbar,
   Typography,
 } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: number;
@@ -39,6 +39,8 @@ const UserTable: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(6);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,7 +57,7 @@ const UserTable: React.FC = () => {
   }, []);
 
   const handleRowClick = (userId: number) => {
-    // navigate(`/details/${userId}`);
+    navigate(`/details/${userId}`);
   };
 
   return (
@@ -80,7 +82,7 @@ const UserTable: React.FC = () => {
             {data
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user.id} onClick={() => handleRowClick(user.id)}>
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.first_name}</TableCell>

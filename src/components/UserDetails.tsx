@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-interface UserDetailsProps {
-  user: {
-    id: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    avatar: string;
-  };
+interface UserData {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  avatar: string;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({
-  user = { id: 0, email: "xx", first_name: "ll", last_name: "b", avatar: "ll" },
-}) => {
+const UserDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [user, setUser] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get(`https://reqres.in/api/users/${id}`);
+        console.log(response);
+        setUser(response.data.data);
+      } catch (error) {
+        console.error("Error fetching details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [id]);
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <h2>User Details</h2>

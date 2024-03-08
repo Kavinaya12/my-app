@@ -1,12 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import UserTable from "./components/UserTable";
+import UserDetails from "./components/UserDetails";
 
 function App() {
   return (
     <div className="App">
-      <UserTable />
+      <Router>
+        <Routes>
+          <Route path="/" element={<UserTable />} />
+          <Route path="/details/:id" element={<UserDetails />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
